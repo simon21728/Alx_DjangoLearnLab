@@ -2,15 +2,6 @@ from django.db import models
 
 from bookshelf.models import Book
 
-# Create a new Book instance
-new_book = Book.objects.create(
-    title="1984",  # Book Title
-    author="George Orwell",  # Book Author
-    published_date="1949-06-08",  # Date when the book was published
-    isbn="9780451524935",  # ISBN number for the book
-    pages=328,  # Number of pages
-    language="English"  # Language of the book
-)
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -20,5 +11,19 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-books = Book.objects.all()
-print(books)
+
+book = Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
+
+
+book = Book.objects.get(title="1984")
+print(f"Title: {book.title}, Author: {book.author}, Year: {book.publication_year}")
+
+
+book = Book.objects.get(title="1984")
+book.title = "Nineteen Eighty-Four"
+book.save()
+
+
+book = Book.objects.get(title="Nineteen Eighty-Four")
+book.delete()
+Book.objects.all()
