@@ -26,3 +26,7 @@ book.save()
 
 book_to_delete = Book.objects.get(id=1)
 book_to_delete.delete()
+try:
+    book = Book.objects.get(id=1)
+except Book.DoesNotExist:
+    print("Book not found.")
