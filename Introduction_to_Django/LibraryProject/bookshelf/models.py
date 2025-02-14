@@ -19,13 +19,20 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(Book, BookAdmin)
 
 
+# bookshelf/models.py
+from django.db import models
+
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-
+    author = models.CharField(max_length=200)
+    published_date = models.DateField()  # This is likely the field you are referring to
+    isbn = models.CharField(max_length=13)
+    pages = models.IntegerField()
+    language = models.CharField(max_length=50)
+    
     def __str__(self):
         return self.title
+
 
 
 book = Book.objects.create(title="1984", author="George Orwell", publication_year=1949)
