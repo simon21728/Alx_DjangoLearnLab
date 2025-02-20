@@ -49,3 +49,21 @@ def get_books_by_author(author_name):
 
 # Example Usage
 get_books_by_author("Author Name")
+def get_librarian_by_library(library_name):
+    try:
+        # Get the library by name
+        library = Library.objects.get(name=library_name)
+        
+        # Get the librarian associated with that library
+        librarian = Librarian.objects.get(library=library)
+        
+        # Print librarian details
+        print(f"Librarian: {librarian.name} works at {library.name} library.")
+    
+    except Library.DoesNotExist:
+        print(f"No library found with the name {library_name}")
+    except Librarian.DoesNotExist:
+        print(f"No librarian found for the library {library_name}")
+
+# Example usage
+get_librarian_by_library("Central Library")  # Replace with an actual library name
