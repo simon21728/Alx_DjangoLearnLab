@@ -10,10 +10,11 @@ urlpatterns = [
     # URL pattern for class-based view
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
 
-    path('login/', views.login_view, name='login'),
+    # Login URL using LoginView with custom template
+    path('login/', auth_views.LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     
-    # Logout URL
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # Logout URL using LogoutView with custom template
+    path('logout/', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
     
     # Registration URL
     path('register/', views.register, name='register'),
