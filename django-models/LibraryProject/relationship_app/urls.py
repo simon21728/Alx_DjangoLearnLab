@@ -1,6 +1,6 @@
 # relationship_app/urls.py
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path,include
 from . import views
 from .views import list_books, LibraryDetailView 
 urlpatterns = [
@@ -17,11 +17,11 @@ urlpatterns = [
     path('', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
     
     # Registration URL
-    path('', views.register, name='register'),
+    #path('register/', views.admin_view, name='register'),
+    path('register/', include('django.contrib.auth.urls')),  # Fixed line
 
     # urls.py
-
-    path('', views.admin_view, name='admin_view'),
-    path('', views.librarian_view, name='librarian_view'),
-    path('', views.member_view, name='member_view'),
+    path('admin/', views.admin_view, name='admin_view'),
+    path('librarian/', views.librarian_view, name='librarian_view'),
+    path('member/', views.member_view, name='member_view'),
 ]
