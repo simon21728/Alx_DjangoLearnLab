@@ -15,6 +15,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     publication_date = models.DateField()  # Make sure this field is defined here
+
     class Meta:
         permissions = [
             ("can_add_book", "Can add book"),
@@ -24,4 +25,3 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
