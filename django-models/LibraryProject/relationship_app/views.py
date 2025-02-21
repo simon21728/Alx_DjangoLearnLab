@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseForbidden
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic.detail import DetailView  # Import DetailView here
 from .models import Library
 from .models import Book,UserProfile,create_user_profile,save_user_profile
