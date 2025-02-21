@@ -8,20 +8,20 @@ urlpatterns = [
     path('', list_books, name='list_books'),
     
     # URL pattern for class-based view
-    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+    path('', views.LibraryDetailView.as_view(), name='library_detail'),
 
     # Login URL using LoginView with custom template
-    path('login/', auth_views.LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
+    path('', auth_views.LoginView.as_view(template_name='relationship_app/login.html'), name='login'),
     
     # Logout URL using LogoutView with custom template
-    path('logout/', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
+    path('', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
     
     # Registration URL
-    path('register/', views.register, name='register'),
+    path('', views.register, name='register'),
 
     # urls.py
 
-    path('admin/', views.admin_view, name='admin_view'),
-    path('librarian/', views.librarian_view, name='librarian_view'),
-    path('member/', views.member_view, name='member_view'),
+    path('', views.admin_view, name='admin_view'),
+    path('', views.librarian_view, name='librarian_view'),
+    path('', views.member_view, name='member_view'),
 ]

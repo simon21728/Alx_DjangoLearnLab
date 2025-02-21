@@ -61,13 +61,11 @@ def login_view(request):
 # views.py
 
 # Check if the user is an Admin
-@login_required
-def admin_view(request):
-    if not request.user.groups.filter(name='Admin').exists():
-        return HttpResponseForbidden("You are not authorized to view this page.")
-    
-    # Your view logic for Admin
-    return render(request, 'admin_dashboard.html')
+def is_admin(user):
+    try:
+        return user.userprofile.role == 'Admin'
+    except UserProfile.DoesNotExist:
+        return False
 
 # Check if the user is a Librarian
 def is_librarian(user):
