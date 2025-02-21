@@ -1,0 +1,18 @@
+<!-- edit_book.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit_book</title>
+    <link rel="stylesheet" href="{% static 'relationship_app/css/styles.css' %}">
+</head>
+<body>
+    <h1>edit_book</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">edit_book</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!-- delete_book.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>delete_book</title>
+    <link rel="stylesheet" href="{% static 'relationship_app/css/styles.css' %}">
+</head>
+<body>
+    <h1>delete_book</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">delete_book</button>
+    </form>
+</body>
+</html>

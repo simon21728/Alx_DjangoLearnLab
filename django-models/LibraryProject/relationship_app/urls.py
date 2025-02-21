@@ -17,15 +17,15 @@ urlpatterns = [
     path('', auth_views.LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),
     
     # Registration URL
-    path('register/', register, name='register'),
+    path('register/', register(template_name='relationship_app/register.html'),name='register'),
     
 
     # urls.py
-    path('admin_view/', views.admin_view, name='admin_view'),
-    path('librarian_viw/', views.librarian_view, name='librarian_view'),
-    path('member_view/', views.member_view, name='member_view'),
+    path('admin_view/', views.admin_view(template_name='relationship_app/admin_view.html'),name='admin_view'),
+    path('librarian_viw/', views.librarian_view(template_name='relationship_app/librarian_view.html'),name='librarian_view'),
+    path('member_view/', views.member_view(template_name='relationship_app/member_view.html'), name='member_view'),
 
-    path('add/', views.add_book, name='add_book'),  # URL for adding a new book
-    path('edit/<int:pk>/', views.edit_book, name='edit_book'),  # URL for editing a book
-    path('delete/<int:pk>/', views.delete_book, name='delete_book'),  # URL for deleting a book
+    path('add/', views.add_book(template_name='relationship_app/add_book.html'), name='add_book'),  # URL for adding a new book
+    path('edit/<int:pk>/', views.edit_book(template_name='relationship_app/edit_book.html'),name='edit_book'),  # URL for editing a book
+    path('delete/<int:pk>/', views.delete_book(template_name='relationship_app/delete_book.html'), name='delete_book'),  # URL for deleting a book
 ]
