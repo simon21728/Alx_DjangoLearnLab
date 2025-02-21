@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -119,7 +119,22 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# The default static files directory is already included by Django (i.e., 'static/' in each app),
+# but you can add additional directories here for more static files outside the app's own static directory.
+
+STATICFILES_DIRS = [
+    # Additional directories where static files can be found
+    os.path.join(BASE_DIR, "static"),  # For example, a global static directory at the project level
+]
+
+# Define the URL where static files can be accessed
+STATIC_URL = '/static/'
+
+# For production, use the following to define the static root directory where collected static files will go
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

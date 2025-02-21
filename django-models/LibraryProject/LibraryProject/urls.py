@@ -21,9 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', include('relationship_app.urls')),  # Include the app's urls.py
     
-    path('books/', include('bookshelf.urls')),  # Example for books app
-    path('register/'),include('django.contrib.auth.urls'),
-    path('login/', include('django.contrib.auth.urls')),  # Add this line for login
-    path('logout/'),include('django.contrib.auth.urls'),
 
 ]
