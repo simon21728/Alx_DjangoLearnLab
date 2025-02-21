@@ -24,6 +24,6 @@ urlpatterns = [
     path('books/', include('bookshelf.urls')),  # Example for books app
     path('register/'),include('django.contrib.auth.urls'),
     path('login/', include('django.contrib.auth.urls')),  # Add this line for login
-    path('logou/'),include('django.contrib.auth.urls')),
+    path('logout/'),include('django.contrib.auth.urls'),
 
 ]

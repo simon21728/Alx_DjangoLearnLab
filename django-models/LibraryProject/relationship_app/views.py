@@ -7,6 +7,10 @@ from .models import Book
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseForbidden
+from .models import UserProfile
+
 # Your function-based view for listing books
 def list_books(request):
     books = Book.objects.all()  # Get all books from the database
@@ -53,3 +57,41 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'relationship_app/login.html', {'form': form})
+
+# views.py
+
+# Check if the user is an Admin
+def is_admin(user):
+    try:
+        return user.userprofile.role == 'Admin'
+    except UserProfile.DoesNotExist:
+        return False
+
+# Check if the user is a Librarian
+def is_librarian(user):
+    try:
+        return user.userprofile.role == 'Librarian'
+    except UserProfile.DoesNotExist:
+        return False
+
+# Check if the user is a Member
+def is_member(user):
+    try:
+        return user.userprofile.role == 'Member'
+    except UserProfile.DoesNotExist:
+        return False
+
+# Admin view - accessible only by Admins
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+# Librarian view - accessible only by Librarians
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+# Member view - accessible only by Members
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'member_view.html')
