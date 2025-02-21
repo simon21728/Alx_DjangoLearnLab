@@ -2,7 +2,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path,include
 from . import views
-from .views import list_books, LibraryDetailView ,register
+from .views import list_books, LibraryDetailView ,register,add_book,edit_book
 urlpatterns = [
     # URL pattern for function-based view
     path('', list_books, name='list_books'),
@@ -25,7 +25,7 @@ urlpatterns = [
     path('librarian_view/', views.librarian_view,name='librarian_view'),
     path('member_view/', views.member_view, name='member_view'),
 
-    path('add/', views.add_book, name='add_book'),  # URL for adding a new book
-    path('edit/<int:pk>/', views.edit_book,name='edit_book'),  # URL for editing a book
+    path('add_book/', add_book, name='add_book'),  # URL for adding a new book
+    path('edit_book/<int:pk>/', edit_book,name='edit_book'),  # URL for editing a book
     path('delete/<int:pk>/', views.delete_book, name='delete_book'),  # URL for deleting a book
 ]
