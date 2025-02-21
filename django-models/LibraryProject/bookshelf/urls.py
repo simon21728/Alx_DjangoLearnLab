@@ -3,6 +3,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),  # Example URL pattern
-    # Add other URL patterns for the bookshelf app here
+    path('index/', views.index, name='index'),  # Example URL pattern
+    path('admin/', views.admin_view, name='admin_view'),  # Add the URL for the Admin view
 ]
