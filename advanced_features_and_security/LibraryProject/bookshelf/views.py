@@ -8,6 +8,7 @@ def book_list(request):
     """
     View to list all books in the system.
     """
+    #books = Book.objects.filter(title__icontains=user_input)
     books = Book.objects.all()  # Fetch all books from the database
     return render(request, 'bookshelf/book_list.html', {'books': books})
 # View to create a book

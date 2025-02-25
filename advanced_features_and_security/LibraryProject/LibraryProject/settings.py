@@ -23,11 +23,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-zt!9&jv7(#_=*8#&ugk845a()ep+^4oc%i0r!1*7h^=h5!&!a1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Secure Cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_SSL_REDIRECT = True
+
+# Allow only HTTPS
+SECURE_SSL_HOSTS = ['yourdomain.com']
 ALLOWED_HOSTS = []
 
-
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'trusted-cdn.com')  # Add trusted sources
+CSP_STYLE_SRC = ("'self'", 'trusted-cdn.com')
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'

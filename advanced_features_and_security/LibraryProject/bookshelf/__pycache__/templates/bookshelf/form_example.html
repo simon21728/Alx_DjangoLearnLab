@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+
+        <!-- Display form errors -->
+        {% if form.errors %}
+            <div class="error-message">
+                Please correct the errors below.
+            </div>
+        {% endif %}
+
+        <!-- Form starts here -->
+        <form method="post">
+            {% csrf_token %}  <!-- CSRF token for security -->
+
+            <!-- Form fields -->
+            <div>
+                <label for="id_username">Username:</label>
+                <input type="text" id="id_username" name="username" required>
+                {% if form.username.errors %}
+                    <div class="error-message">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="id_email">Email:</label>
+                <input type="email" id="id_email" name="email" required>
+                {% if form.email.errors %}
+                    <div class="error-message">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="id_password1">Password:</label>
+                <input type="password" id="id_password1" name="password1" required>
+                {% if form.password1.errors %}
+                    <div class="error-message">{{ form.password1.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="id_password2">Confirm Password:</label>
+                <input type="password" id="id_password2" name="password2" required>
+                {% if form.password2.errors %}
+                    <div class="error-message">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Submit button -->
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+</body>
+</html>
