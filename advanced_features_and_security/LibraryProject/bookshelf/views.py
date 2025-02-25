@@ -4,6 +4,26 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from .forms import ExampleForm
+
+def add_book(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Process the data (save it to the database, etc.)
+            title = form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            # For demonstration, we just print the cleaned data
+            print(f"Book title: {title}, Author: {author}")
+            # Redirect to a success page or show a success message
+        else:
+            # If form is not valid, it will automatically return errors to the template
+            print("Form is invalid")
+    else:
+        form = ExampleForm()
+
+    return render(request, 'bookshelf/form_example.html', {'form': form})
+
 def book_list(request):
     """
     View to list all books in the system.
