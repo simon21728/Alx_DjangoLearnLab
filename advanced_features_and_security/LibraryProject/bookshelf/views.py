@@ -4,7 +4,12 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
-
+def book_list(request):
+    """
+    View to list all books in the system.
+    """
+    books = Book.objects.all()  # Fetch all books from the database
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 # View to create a book
 @permission_required('relationship_app.can_create', raise_exception=True)
 def create_book(request):
