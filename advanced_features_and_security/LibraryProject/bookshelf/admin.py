@@ -2,6 +2,37 @@ from django.contrib import admin
 from .models import Book
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
+from relationship_app.models import UserProfile
+from django.contrib.auth.models import Group, Permission
+
+# Register Book model
+admin.site.register(Book)
+
+# Add custom permissions to groups
+def assign_permissions():
+    # Create groups
+    group_admins, created = Group.objects.get_or_create(name='Admins')
+    group_editors, created = Group.objects.get_or_create(name='Editors')
+    group_viewers, created = Group.objects.get_or_create(name='Viewers')
+    
+    # Assign permissions to Admins group
+    group_admins.permissions.set(
+        Permission.objects.filter(content_type__model='book')
+    )
+    
+    # Assign create and edit permissions to Editors group
+    group_editors.permissions.set(
+        Permission.objects.filter(codename__in=['can_create', 'can_edit'])
+    )
+    
+    # Assign view permission to Viewers group
+    group_viewers.permissions.set(
+        Permission.objects.filter(codename='can_view')
+    )
+
+# Call this function once during app setup or manually from the shell to assign permissions.
+assign_permissions()
+
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser

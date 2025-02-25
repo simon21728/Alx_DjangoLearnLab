@@ -5,8 +5,21 @@ from django.dispatch import receiver
 from django.conf import settings
 from django.db import models
 from bookshelf.models import Book,Author
+
 class UserProfile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Librarian', 'Librarian'),
+        ('Member', 'Member'),
+    ]
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
+    bio = models.TextField()
+    # other fields...
+
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
+       
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -31,22 +44,6 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# models.py
-
-class UserProfile(models.Model):
-    ROLE_CHOICES = [
-        ('Admin', 'Admin'),
-        ('Librarian', 'Librarian'),
-        ('Member', 'Member'),
-    ]
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
-
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
 
 # Automatically create a UserProfile when a new user is registered
 @receiver(post_save, sender=User)
