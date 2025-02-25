@@ -1,0 +1,19 @@
+<!-- librarian_view.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Librarian View</title>
+    <link rel="stylesheet" href="{% static 'relationship_app/css/styles.css' %}">
+</head>
+<body>
+    <h1>Librarian View</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Librarian View</button>
+    </form>
+</body>
+</html>
+
