@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
 # advanced_features_and_security/settings.py
 
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
