@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'api_project',
     'api',
 ]
@@ -77,8 +78,12 @@ WSGI_APPLICATION = 'api_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sewmehon',  # Your PostgreSQL database name
+        'USER': 'root',  # Your PostgreSQL username
+        'PASSWORD': 'Sew76@bayu21',  # Your PostgreSQL password
+        'HOST': '127.0.0.1',  # Database host (use 'localhost' or an IP address)
+        'PORT': '3306',
     }
 }
 
