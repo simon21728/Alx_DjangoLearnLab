@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zrg6^s^n$sf25!cwi88#t8j*pm8#tci@ltc_-kmrfc@z1auihi'
+SECRET_KEY = 'django-insecure-*or)bfuxrso3x1o12d*27-ri$8dg*^5@r(0+=*myt19yusak9p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'api',
+    'rest_framework',  # Add Django REST Framework
+    'api',  # Add your app
 ]
 
 MIDDLEWARE = [
@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'advanced_api_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sewmehon',  # Replace with your DB name
-        'USER': 'root',  # Replace with your DB user
-        'PASSWORD': 'Sew76@bayu21',  # Replace with your DB password
-        'HOST': '127.0.0.1',  # Database server address (use 'localhost' for local development)
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
