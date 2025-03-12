@@ -1,17 +1,21 @@
-from django.shortcuts import render
+from rest_framework import generics, permissions
+from .models import Book
+from .serializers import BookSerializer
+from rest_framework import filters
 
-# Create your views here.
-# api/views.py
-from rest_framework import generics
-from .models import Author
-from .serializers import AuthorSerializer
+# List all books and create a new book
+class BookListCreateView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # Allow read-only access to unauthenticated user
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'author__name']  # Allow searching by title or author name
+    def perform_create(self, serializer):
+        # Custom logic before saving the book instance
+        serializer.save()
 
-# View to list all authors
-class AuthorListView(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-# View to get details of a single author (with nested books)
-class AuthorDetailView(generics.RetrieveAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+# Retrieve, update, or delete a single book
+class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # Allow read-only access to unauthenticated users

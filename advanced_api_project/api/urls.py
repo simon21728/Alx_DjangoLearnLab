@@ -1,11 +1,9 @@
-# api/urls.py
 from django.urls import path
-from .views import AuthorListView, AuthorDetailView
+from . import views
 
 urlpatterns = [
-    # Endpoint to retrieve a list of authors
-    path('authors/', AuthorListView.as_view(), name='author-list'),
-    
-    # Endpoint to retrieve a single author with their books
-    path('authors/<int:pk>/', AuthorDetailView.as_view(), name='author-detail'),
+    # Endpoint for listing all books and creating a new book
+    path('books/', views.BookListCreateView.as_view(), name='book-list-create'),
+    # Endpoint for retrieving, updating, or deleting a single book
+    path('books/<int:pk>/', views.BookDetailView.as_view(), name='book-detail'),
 ]
