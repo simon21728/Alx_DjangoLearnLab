@@ -1,12 +1,11 @@
 # api/urls.py
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import AuthorViewSet, BookViewSet
-
-router = DefaultRouter()
-router.register(r'authors', AuthorViewSet)
-router.register(r'books', BookViewSet)
+from django.urls import path
+from .views import AuthorListView, AuthorDetailView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # Endpoint to retrieve a list of authors
+    path('authors/', AuthorListView.as_view(), name='author-list'),
+    
+    # Endpoint to retrieve a single author with their books
+    path('authors/<int:pk>/', AuthorDetailView.as_view(), name='author-detail'),
 ]

@@ -1,20 +1,17 @@
 from django.shortcuts import render
 
 # Create your views here.
-from rest_framework import viewsets
-from .models import Author, Book
-from .serializers import AuthorSerializer, BookSerializer
+# api/views.py
+from rest_framework import generics
+from .models import Author
+from .serializers import AuthorSerializer
 
-class AuthorViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for listing or retrieving authors.
-    """
+# View to list all authors
+class AuthorListView(generics.ListCreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
-class BookViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for listing or retrieving books.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+# View to get details of a single author (with nested books)
+class AuthorDetailView(generics.RetrieveAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
