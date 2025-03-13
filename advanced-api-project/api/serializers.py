@@ -4,7 +4,7 @@ from .models import Author, Book
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'publication_date', 'isbn']
+        fields = ['id', 'title', 'author', 'publication_year']
 
     def validate_publication_year(self, value):
         if value > 2025:  # Change the year to your desired future validation

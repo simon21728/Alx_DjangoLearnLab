@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class BookAPITestCase(APITestCase):
     def setUp(self):
         """Set up initial data and users."""
-        self.user = User.objects.create_user(username='testuser', password='password123')
+        self.user = User.objects.create_user(username='sewmehon', password='Sew76@bayu21')
         self.book_data = {
             'title': 'Django for Beginners',
             'author': 'John Doe',
@@ -19,7 +19,7 @@ class BookAPITestCase(APITestCase):
     
     def test_create_book_authenticated(self):
         """Test that an authenticated user can create a book."""
-        self.client.login(username='testuser', password='password123')
+        self.client.login(username='sewmehon', password='Sew76@bayu21')
         response = self.client.post(self.url, self.book_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Book.objects.count(), 2)  # Ensure one book is created
@@ -32,7 +32,7 @@ class BookAPITestCase(APITestCase):
     def test_update_book(self):
         """Test that an authenticated user can update a book."""
         update_data = {'title': 'Django for Experts'}
-        self.client.login(username='testuser', password='password123')
+        self.client.login(username='sewmehon', password='Sew76@bayu')
         response = self.client.patch(reverse('book-detail', args=[self.book.id]), update_data, format='json')
         self.book.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -40,7 +40,7 @@ class BookAPITestCase(APITestCase):
 
     def test_delete_book(self):
         """Test that an authenticated user can delete a book."""
-        self.client.login(username='testuser', password='password123')
+        self.client.login(username='sewmehon', password='Sew76@bayu21')
         response = self.client.delete(reverse('book-detail', args=[self.book.id]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Book.objects.count(), 0)  # Book should be deleted
