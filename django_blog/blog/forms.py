@@ -13,7 +13,7 @@ class PostForm(forms.ModelForm):
     # Explicitly set the widget for the tags field
     tags = forms.CharField(
         required=False,
-        widget=TagWidget()  # This is the TagWidget that handles the tag input
+        widgets=TagWidget()  # This is the TagWidget that handles the tag input
     )
 
 
