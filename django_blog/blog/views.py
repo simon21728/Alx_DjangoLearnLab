@@ -18,6 +18,15 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list_by_tag.html'  # Create a template for displaying posts by tag
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs['tag_slug']
+        tag = Tag.objects.get(slug=tag_slug)  # Get the Tag object based on the slug
+        return Post.objects.filter(tags=tag)  # Filter posts by the tag
 
 
 # View posts by tag
