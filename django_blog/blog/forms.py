@@ -8,13 +8,14 @@ from taggit.forms import TagWidget  # Import the TagWidget
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']  # Include the tags field
+        fields = ['title', 'content', 'tags']  # Include tags in the form
 
-    # Customize the tags field with TagWidget for better rendering
+    # Explicitly set the widget for the tags field
     tags = forms.CharField(
         required=False,
-        widget=TagWidget()  # Use the TagWidget to handle tags in the form
+        widget=TagWidget()  # This is the TagWidget that handles the tag input
     )
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
