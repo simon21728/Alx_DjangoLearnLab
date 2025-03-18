@@ -18,5 +18,11 @@
         <a href="{% url 'post-delete' post.pk %}">Delete</a>
     {% endif %}
     <a href="{% url 'post-list' %}">Back to Posts</a>
+    <div>
+        Tags: 
+        {% for tag in post.tags.all %}
+            <a href="{% url 'tag-posts' tag.name %}">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
 </body>
 </html>
