@@ -18,6 +18,8 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
+
+
 # View posts by tag
 def tag_posts(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
