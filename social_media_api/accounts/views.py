@@ -1,8 +1,10 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
 from rest_framework.authtoken.models import Token
+from .models import CustomUser
 from django.shortcuts import get_object_or_404
 from .serializers import (
     UserSerializer, 
@@ -49,12 +51,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     
     def get_object(self):
         return self.request.user
-    
 class FollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Using the required permission class
     
     def post(self, request, user_id):
-        user_to_follow = get_object_or_404(User, id=user_id)
+        user_to_follow = get_object_or_404(CustomUser.objects.all(), id=user_id)  # Using CustomUser.objects.all()
         
         if request.user == user_to_follow:
             return Response(
@@ -75,10 +76,10 @@ class FollowUserView(generics.GenericAPIView):
         )
 
 class UnfollowUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Using the required permission class
     
     def post(self, request, user_id):
-        user_to_unfollow = get_object_or_404(User, id=user_id)
+        user_to_unfollow = get_object_or_404(CustomUser.objects.all(), id=user_id)  # Using CustomUser.objects.all()
         
         if not request.user.following.filter(id=user_id).exists():
             return Response(
@@ -94,14 +95,14 @@ class UnfollowUserView(generics.GenericAPIView):
 
 class FollowingListView(generics.ListAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Using the required permission class
     
     def get_queryset(self):
         return self.request.user.following.all()
 
 class FollowersListView(generics.ListAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Using the required permission class
     
     def get_queryset(self):
         return self.request.user.followers.all()
