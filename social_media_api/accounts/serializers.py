@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate
+
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,18 +13,20 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    tokens = serializers.SerializerMethodField()
+    token = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'tokens']
+        fields = ['id', 'username', 'email', 'password', 'token']
         extra_kwargs = {'password': {'write_only': True}}
     
-    def get_token(self, obj):
-        token, created = Token.objects.get_or_create(user=obj)
+    def get_token(self, user):
+        # Create a new token for the user
+        token = Token.objects.create(user=user)
         return token.key
     
     def create(self, validated_data):
+        # Create the user using create_user method
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email', ''),
@@ -33,10 +37,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
-    tokens = serializers.SerializerMethodField()
+    token = serializers.SerializerMethodField()
     
-    def get_token(self, obj):
-        user = User.objects.get(username=obj['username'])
+    def get_token(self, user):
+        # Create or get existing token for the user
         token, created = Token.objects.get_or_create(user=user)
         return token.key
     
@@ -47,4 +51,9 @@ class UserLoginSerializer(serializers.Serializer):
         if not username or not password:
             raise serializers.ValidationError('Both username and password are required')
         
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise serializers.ValidationError('Invalid credentials')
+        
+        data['user'] = user
         return data
