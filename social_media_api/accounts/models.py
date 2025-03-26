@@ -6,7 +6,12 @@ class User(AbstractUser):
     # Custom fields
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
-    followers = models.ManyToManyField('self', symmetrical=False, blank=True)
+    following = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        blank=True,
+        related_name='followers'
+    )
     
     # Fix for groups and permissions conflicts
     groups = models.ManyToManyField(
@@ -14,16 +19,16 @@ class User(AbstractUser):
         verbose_name=_('groups'),
         blank=True,
         help_text=_('The groups this user belongs to.'),
-        related_name="accounts_user_groups",  # Unique related_name
-        related_query_name="accounts_user",
+        related_name="custom_user_set",  # Unique related_name
+        related_query_name="custom_user",
     )
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name=_('user permissions'),
         blank=True,
         help_text=_('Specific permissions for this user.'),
-        related_name="accounts_user_permissions",  # Unique related_name
-        related_query_name="accounts_user",
+        related_name="custom_user_set",  # Unique related_name
+        related_query_name="custom_user",
     )
     
     class Meta:

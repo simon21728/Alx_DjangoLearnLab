@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from django.contrib.auth import get_user_model
-
+from rest_framework import generics
 User = get_user_model()
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -72,3 +72,12 @@ class CommentViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_403_FORBIDDEN
             )
         return super().update(request, *args, **kwargs)
+    
+class FeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        # Get posts from users the current user is following
+        following_users = self.request.user.following.all()
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
