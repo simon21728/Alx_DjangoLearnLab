@@ -6,7 +6,7 @@ from .serializers import PostSerializer, CommentSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status
 from .models import Post, Like
-from notifications.models import notifications
+from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 
 User = get_user_model()
@@ -101,7 +101,7 @@ class LikePostView(generics.GenericAPIView):
         
         # Create notification
         if post.author != request.user:  # Don't notify yourself
-            notifications.objects.create(
+            Notification.objects.create(
                 recipient=post.author,
                 actor=request.user,
                 verb="liked your post",

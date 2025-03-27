@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import notifications
+from .models import Notification
 from accounts.serializers import CustomUserSerializer
 
-class notificationSerializer(serializers.ModelSerializer):
+class NotificationSerializer(serializers.ModelSerializer):
     actor = CustomUserSerializer(read_only=True)
     
     class Meta:
-        model = notifications
+        model = Notification
         fields = ['id', 'actor', 'verb', 'target', 'read', 'created_at']
         read_only_fields = ['id', 'actor', 'verb', 'target', 'created_at']
