@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework import permissions
 from notifications.models import notifications
 from rest_framework.authtoken.models import Token
-from .models import custom_user
+from .models import CustomUser
 from django.shortcuts import get_object_or_404
 from .serializers import (
     UserSerializer, 
@@ -57,7 +57,7 @@ class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
       
     def post(self, request, user_id):
-        all_users = custom_user.objects.all()
+        all_users = CustomUser.objects.all()
         user_to_follow = get_object_or_404(User, id=user_id)
         request.user.following.add(user_to_follow)
         notifications.objects.create(
@@ -87,7 +87,7 @@ class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def post(self, request, user_id):
-        all_users = custom_user.objects.all()
+        all_users = CustomUser.objects.all()
         user_to_unfollow = get_object_or_404(User, id=user_id)
         
         if not request.user.following.filter(id=user_id).exists():
@@ -107,7 +107,7 @@ class FollowingListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
-        all_users = custom_user.objects.all()
+        all_users = CustomUser.objects.all()
         return self.request.user.following.all()
 
 class FollowersListView(generics.ListAPIView):
@@ -115,5 +115,5 @@ class FollowersListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
-        all_users = custom_user.objects.all()
+        all_users = CustomUser.objects.all()
         return self.request.user.followers.all()
