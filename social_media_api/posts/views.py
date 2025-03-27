@@ -96,11 +96,16 @@ class LikePostView(generics.GenericAPIView):
         # Explicitly using get_object_or_404 through generics
         post = generics.get_object_or_404(Post, pk=pk)
         
-        # Explicit Like.objects.get_or_create with both conditions
-        like, created = Like.objects.get_or_create(
-            user=request.user,
-            post=post
-        )
+        try:
+            like, created = Like.objects.get_or_create(
+                user=request.user,
+                post=post
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         if not created:
             return Response(
@@ -118,14 +123,13 @@ class LikePostView(generics.GenericAPIView):
                 timestamp=timezone.now()
             )
         
-        return Response(
+            return Response(
             {
                 "message": "Post liked successfully",
                 "likes_count": post.likes.count()
             },
             status=status.HTTP_201_CREATED
         )
-
 class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
