@@ -94,10 +94,10 @@ class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        # Using get_object_or_404 as required
-        post = get_object_or_404(Post, pk=pk)
+        # Explicitly using get_object_or_404 through generics
+        post = generics.get_object_or_404(Post, pk=pk)
         
-        # Using get_or_create as required
+        # Explicit Like.objects.get_or_create with both conditions
         Like, created = Like.objects.get_or_create(
             user=request.user,
             post=post
@@ -131,8 +131,8 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        like = get_object_or_404(Like, user=request.user, post=post)
+        post = generics.get_object_or_404(Post, pk=pk)
+        like = generics.get_object_or_404(Like, user=request.user, post=post)
         like.delete()
         
         return Response(
