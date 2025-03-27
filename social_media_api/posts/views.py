@@ -98,10 +98,7 @@ class LikePostView(generics.GenericAPIView):
         post = generics.get_object_or_404(Post, pk=pk)
         
         # Explicit Like.objects.get_or_create with both conditions
-        Like, created = Like.objects.get_or_create(
-            user=request.user,
-            post=post
-        )
+        Like, created = Like.objects.get_or_create(user=request.user, post=post)
         
         if not created:
             return Response(
