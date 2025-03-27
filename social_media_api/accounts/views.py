@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
+from notifications.models import Notification
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
 from django.shortcuts import get_object_or_404
@@ -54,11 +55,16 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
-    
+      
     def post(self, request, user_id):
         all_users = CustomUser.objects.all()
         user_to_follow = get_object_or_404(User, id=user_id)
-        
+        request.user.following.add(user_to_follow)
+        Notification.objects.create(
+        recipient=user_to_follow,
+        actor=request.user,
+        verb="started following you",
+        target=request.user)
         if request.user == user_to_follow:
             return Response(
                 {"error": "You cannot follow yourself"},

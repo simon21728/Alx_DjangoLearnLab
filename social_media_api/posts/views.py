@@ -4,9 +4,12 @@ from django.shortcuts import get_object_or_404
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from django.contrib.auth import get_user_model
-from rest_framework import generics
-User = get_user_model()
+from rest_framework import generics, permissions, status
+from .models import Post, Like
+from notifications.models import notifications
+from django.contrib.contenttypes.models import ContentType
 
+User = get_user_model()
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -81,3 +84,44 @@ class FeedView(generics.ListAPIView):
         # Get posts from users the current user is following
         following_users = self.request.user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+    
+class LikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        
+        if Like.objects.filter(user=request.user, post=post).exists():
+            return Response(
+                {"error": "You have already liked this post"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        like = Like.objects.create(user=request.user, post=post)
+        
+        # Create notification
+        if post.author != request.user:  # Don't notify yourself
+            notifications.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target=post
+            )
+        
+        return Response(
+            {"message": "Post liked successfully", "likes_count": post.likes.count()},
+            status=status.HTTP_201_CREATED
+        )
+
+class UnlikePostView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        like = get_object_or_404(Like, user=request.user, post=post)
+        like.delete()
+        
+        return Response(
+            {"message": "Post unliked successfully", "likes_count": post.likes.count()},
+            status=status.HTTP_200_OK
+        )
