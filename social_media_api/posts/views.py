@@ -89,23 +89,19 @@ class FeedView(generics.ListAPIView):
         # Get posts from users the current user is following
         following_users = self.request.user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+    
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        # Explicitly using get_object_or_404 through generics
-        post = generics.get_object_or_404(Post, pk=pk)
+        # Using get_object_or_404 as required
+        post = get_object_or_404(Post, pk=pk)
         
-        try:
-            like, created = Like.objects.get_or_create(
-                user=request.user,
-                post=post
-            )
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # Using get_or_create as required
+        Like, created = Like.objects.get_or_create(
+            user=request.user,
+            post=post
+        )
         
         if not created:
             return Response(
@@ -123,19 +119,20 @@ class LikePostView(generics.GenericAPIView):
                 timestamp=timezone.now()
             )
         
-            return Response(
+        return Response(
             {
                 "message": "Post liked successfully",
                 "likes_count": post.likes.count()
             },
             status=status.HTTP_201_CREATED
         )
+
 class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = generics.get_object_or_404(Post, pk=pk)
-        like = generics.get_object_or_404(Like, user=request.user, post=post)
+        post = get_object_or_404(Post, pk=pk)
+        like = get_object_or_404(Like, user=request.user, post=post)
         like.delete()
         
         return Response(
