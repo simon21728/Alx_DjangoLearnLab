@@ -4,9 +4,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions
-from notifications.models import Notification
+from notifications.models import notifications
 from rest_framework.authtoken.models import Token
-from .models import CustomUser
+from .models import custom_user
 from django.shortcuts import get_object_or_404
 from .serializers import (
     UserSerializer, 
@@ -57,10 +57,10 @@ class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
       
     def post(self, request, user_id):
-        all_users = CustomUser.objects.all()
+        all_users = custom_user.objects.all()
         user_to_follow = get_object_or_404(User, id=user_id)
         request.user.following.add(user_to_follow)
-        Notification.objects.create(
+        notifications.objects.create(
         recipient=user_to_follow,
         actor=request.user,
         verb="started following you",
@@ -87,7 +87,7 @@ class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def post(self, request, user_id):
-        all_users = CustomUser.objects.all()
+        all_users = custom_user.objects.all()
         user_to_unfollow = get_object_or_404(User, id=user_id)
         
         if not request.user.following.filter(id=user_id).exists():

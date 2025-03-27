@@ -33,7 +33,7 @@ class Comment(models.Model):
         return f"Comment by {self.author.username} on {self.post.title}"
     
 class Like(models.Model):
-    user = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('accounts.custom_user', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
