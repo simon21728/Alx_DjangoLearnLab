@@ -56,6 +56,7 @@ class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def post(self, request, user_id):
+        all_users = CustomUser.objects.all()
         user_to_follow = get_object_or_404(User, id=user_id)
         
         if request.user == user_to_follow:
@@ -80,6 +81,7 @@ class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def post(self, request, user_id):
+        all_users = CustomUser.objects.all()
         user_to_unfollow = get_object_or_404(User, id=user_id)
         
         if not request.user.following.filter(id=user_id).exists():
@@ -99,6 +101,7 @@ class FollowingListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
+        all_users = CustomUser.objects.all()
         return self.request.user.following.all()
 
 class FollowersListView(generics.ListAPIView):
@@ -106,4 +109,5 @@ class FollowersListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
+        all_users = CustomUser.objects.all()
         return self.request.user.followers.all()
