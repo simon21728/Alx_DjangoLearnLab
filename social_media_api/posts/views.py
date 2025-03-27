@@ -89,15 +89,14 @@ class FeedView(generics.ListAPIView):
         # Get posts from users the current user is following
         following_users = self.request.user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
-    
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        # Using get_object_or_404 as required
-        post = get_object_or_404(Post, pk=pk)
+        # Explicitly using get_object_or_404 through generics
+        post = generics.get_object_or_404(Post, pk=pk)
         
-        # Using get_or_create as required
+        # Explicit Like.objects.get_or_create with both conditions
         like, created = Like.objects.get_or_create(
             user=request.user,
             post=post
@@ -131,8 +130,8 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        like = get_object_or_404(Like, user=request.user, post=post)
+        post = generics.get_object_or_404(Post, pk=pk)
+        like = generics.get_object_or_404(Like, user=request.user, post=post)
         like.delete()
         
         return Response(
