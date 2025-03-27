@@ -107,7 +107,7 @@ class FollowingListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
-        all_users = CustomUser.objects.all()
+        all_users = custom_user.objects.all()
         return self.request.user.following.all()
 
 class FollowersListView(generics.ListAPIView):
@@ -115,5 +115,5 @@ class FollowersListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]  # Added required permission class
     
     def get_queryset(self):
-        all_users = CustomUser.objects.all()
+        all_users = custom_user.objects.all()
         return self.request.user.followers.all()
